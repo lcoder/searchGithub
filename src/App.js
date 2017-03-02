@@ -1,27 +1,19 @@
 // hot loading need configuration: { "modules": false }
 import 'whatwg-fetch' ;
 import React , { Component } from 'react' ;
-
+import SearchBar from './searchBar' ;
 
 export default class App extends Component {
     constructor( props ){
         super( props ) ;
 
         this.benginSearch = this.benginSearch.bind( this ) ;
-        this.handleChange = this.handleChange.bind( this ) ;
     }
     componentDidMount(){
 
     }
-    handleChange( event ){
-        var value = event.target.value ;
-        this.props.store.dispatch( {
-            type: 'CHANGE_KEYWORD' ,
-            value
-        } ) ;
-    }
-    benginSearch(){
-        var value = this._input.value ;
+    benginSearch( value ){
+        //var value = event.target.value ;
         var url = 'https://api.github.com/search/repositories?q=' + value ;
         url = '/api' ;
 
@@ -50,10 +42,7 @@ export default class App extends Component {
         } ) ;
         return (
             <div>
-                <div>
-                    <input ref={ (e)=>{ this._input = e } } onChange={this.handleChange} value={keyword} placeholder="请输入搜索内容" />
-                    <button onClick={ this.benginSearch }>搜索</button>
-                </div>
+                <SearchBar value={ keyword } beginSearch={ this.benginSearch } />
                 <div>
                     { isFetch ?
                         <p>loading...</p> :
