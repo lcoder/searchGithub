@@ -6,12 +6,7 @@ import React , { Component } from 'react' ;
 export default class App extends Component {
     constructor( props ){
         super( props ) ;
-        this.state = {
-            keyword: '' ,
-            list: [] ,
-            isFetch: false ,
-            error: ''
-        } ;
+
         this.benginSearch = this.benginSearch.bind( this ) ;
         this.handleChange = this.handleChange.bind( this ) ;
     }
@@ -19,17 +14,19 @@ export default class App extends Component {
 
     }
     handleChange( event ){
-        this.setState( {
-            keyword: event.target.value
-        } )
+        var value = event.target.value ;
+        this.props.store.dispatch( {
+            type: 'CHANGE_KEYWORD' ,
+            value
+        } ) ;
     }
     benginSearch(){
         var value = this._input.value ;
         var url = 'https://api.github.com/search/repositories?q=' + value ;
         url = '/api' ;
-        this.setState( {
-            isFetch: true
-        } ) ;
+
+        this.props.store.dispatch( { type: 'LOADING' } ) ;
+
         fetch( url )
         .then(function(response) {
             return response.json()
@@ -38,37 +35,31 @@ export default class App extends Component {
             if( json.message ){
                 throw new Error( json.message ) ;
             }else{
-                this.setState( {
-                    list: items ,
-                    isFetch: false ,
-                    error: ''
-                } ) ;
+                this.props.store.dispatch( { type: 'SHOW_LIST' , list: items } ) ;
             }
         }).catch( (ex)=> {
-            this.setState( {
-                list: [] ,
-                isFetch: false ,
-                error: ex + ''
-            } )
+            this.props.store.dispatch( { type: 'SHOW_ERROR' , error: ex + '' } ) ;
             console.log('parsing failed', ex)
         })
     }
     render() {
-        var list = this.state.list.map( ( item , index )=>{
+        const { list , keyword , isFetch , error } = this.props.store.getState() ;
+
+        var listMap = list.map( ( item , index )=>{
             return <li key={index}>{item.full_name} stars: { item.stargazers_count } forks_count: { item.forks_count }</li>
         } ) ;
         return (
             <div>
                 <div>
-                    <input ref={ (e)=>{ this._input = e } } onChange={this.handleChange} value={this.state.keyword} placeholder="请输入搜索内容" />
+                    <input ref={ (e)=>{ this._input = e } } onChange={this.handleChange} value={keyword} placeholder="请输入搜索内容" />
                     <button onClick={ this.benginSearch }>搜索</button>
                 </div>
                 <div>
-                    { this.state.isFetch ?
+                    { isFetch ?
                         <p>loading...</p> :
-                            this.state.error ? <p>{this.state.error}</p> :
+                            error ? <p>{error}</p> :
                                 <ul>
-                                    { list }
+                                    { listMap }
                                 </ul>
                     }
                 </div>
