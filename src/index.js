@@ -5,6 +5,7 @@ import { createStore } from 'redux' ;
 import reducer from './reducer' ;
 
 const initialState = { keyword: '' , list: [] , isFetch: false , error: '' } ;
+
 var store = createStore( reducer , initialState ) ;
 
 function render(){

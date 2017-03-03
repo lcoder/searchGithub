@@ -2,6 +2,7 @@
 import 'whatwg-fetch' ;
 import React , { Component } from 'react' ;
 import SearchBar from './searchBar' ;
+import SearchResult from './searchResult' ;
 
 export default class App extends Component {
     constructor( props ){
@@ -31,27 +32,16 @@ export default class App extends Component {
             }
         }).catch( (ex)=> {
             this.props.store.dispatch( { type: 'SHOW_ERROR' , error: ex + '' } ) ;
-            console.log('parsing failed', ex)
+            console.log('parsing failed', ex )
         })
     }
     render() {
         const { list , keyword , isFetch , error } = this.props.store.getState() ;
 
-        var listMap = list.map( ( item , index )=>{
-            return <li key={index}>{item.full_name} stars: { item.stargazers_count } forks_count: { item.forks_count }</li>
-        } ) ;
         return (
             <div>
                 <SearchBar value={ keyword } beginSearch={ this.benginSearch } />
-                <div>
-                    { isFetch ?
-                        <p>loading...</p> :
-                            error ? <p>{error}</p> :
-                                <ul>
-                                    { listMap }
-                                </ul>
-                    }
-                </div>
+                <SearchResult isFetch={isFetch} error={error} list={list} />
             </div>
         );
     }

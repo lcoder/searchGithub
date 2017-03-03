@@ -11,7 +11,7 @@ import {
 } from 'react-addons-test-utils' ;
 
 
-describe( '测试基本组件的测试套件' , ()=>{
+describe( '测试套件和测试用例' , ()=>{
     // 要点expect 表达式    to.be 语法
     it( '测试加法' , ()=>{
         function add( a , b ){
@@ -29,9 +29,12 @@ describe( '测试基本组件的测试套件' , ()=>{
 
         var $button = findRenderedDOMComponentWithTag( button , 'button' ) ;
 
-        expect( $button.className ).to.be.equal( 'blue' ) ;
+        expect( $button ).to.be.ok ;
 
         // 有真实dom的API
+
+        expect( $button.className ).to.be.equal( 'blue' ) ;
+
         expect( $button.nodeType ).to.be.equal( 1 ) ;
 
         expect( $button.innerHTML ).to.be.equal( '我是一个按钮' ) ;
