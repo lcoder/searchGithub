@@ -3,8 +3,10 @@ import React , { Component } from 'react' ;
 
 export class Button extends Component {
     render(){
-        return ( <button className={this.props.className} onClick={this.props.onClick}>
-            {this.props.children}
-        </button> )
+        const { className , onClick , children } = this.props ;
+        return (
+            <button className={className} onClick={onClick}>{children}</button>
+        ) ;
     }
 }
+

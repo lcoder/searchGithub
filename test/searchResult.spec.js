@@ -1,94 +1,75 @@
 import React from 'react' ;
-import ReactDOM from 'react-dom' ;
 import { expect } from 'chai' ;
+
 import SearchResult from '../src/searchResult' ;
 
 
 import {
-    Simulate ,
     renderIntoDocument ,
-    findRenderedDOMComponentWithTag ,
-    findRenderedDOMComponentWithClass ,
-    scryRenderedDOMComponentsWithClass ,
-    scryRenderedDOMComponentsWithTag
+    scryRenderedDOMComponentsWithClass
 } from 'react-addons-test-utils' ;
 
+describe( '测试SearchResult组件' , ()=>{
 
+    it( '先测试loading的状态' , ()=>{
 
-describe( 'searchResult' , ()=>{
-
-    // 测试loading状态
-    it( 'loading' , ()=>{
-
-        const initial = {
-            isFetch: true , error: '' , list: []
+        var initial = {
+            isFetch: true
         }
 
-        const searchResult = renderIntoDocument( <SearchResult { ...initial } /> ) ;
+        var searchResult = renderIntoDocument( <SearchResult { ...initial } /> ) ;
 
-        const $loading = findRenderedDOMComponentWithClass( searchResult , 'loading' ) ;
+        var $loading = scryRenderedDOMComponentsWithClass( searchResult , 'loading' ) ;
 
-        const $error = scryRenderedDOMComponentsWithClass( searchResult , 'error' ) ;
+        var $error = scryRenderedDOMComponentsWithClass( searchResult , 'error' ) ;
 
-        const $list = scryRenderedDOMComponentsWithClass( searchResult , 'list' ) ;
+        var $list = scryRenderedDOMComponentsWithClass( searchResult , 'list' ) ;
 
-        expect( $loading ).to.be.ok ;
+        expect( $loading.length ).to.be.equal( 1 ) ;
 
-        expect( $error.length ).to.be.equal( 0 ) ;
+        expect( $error.length ).to.be.equal( 0 )  ;
 
         expect( $list.length ).to.be.equal( 0 ) ;
-
     } )
 
-    // 测试错误状态
-    it( 'error' , ()=>{
-
-        const initial = {
-            isFetch: false , error: 'some thing error' , list: []
+    it( '然后测试error的状态' , ()=>{
+        var initial = {
+            isFetch: false ,
+            error: 'some thing error'
         }
+        var searchResult = renderIntoDocument( <SearchResult {...initial} /> ) ;
 
-        const searchResult = renderIntoDocument( <SearchResult { ...initial } /> ) ;
+        var $loading = scryRenderedDOMComponentsWithClass( searchResult , 'loading' ) ;
 
-        const $loading = scryRenderedDOMComponentsWithClass( searchResult , 'loading' ) ;
+        var $error = scryRenderedDOMComponentsWithClass( searchResult , 'error' ) ;
 
-        const $error = scryRenderedDOMComponentsWithClass( searchResult , 'error' ) ;
-
-        const $list = scryRenderedDOMComponentsWithClass( searchResult , 'list' ) ;
+        var $list = scryRenderedDOMComponentsWithClass( searchResult , 'list' ) ;
 
         expect( $loading.length ).to.be.equal( 0 ) ;
 
-        expect( $error[0].innerHTML ).to.be.equal( 'some thing error' ) ;
+        expect( $error.length ).to.be.equal( 1 ) ;
 
         expect( $list.length ).to.be.equal( 0 ) ;
 
-    } )
+    } ) ;
 
-    // 测试有数据的状态
-    it( 'list' , ()=>{
 
-        const initial = {
-            isFetch: false , error: '' , list: [
-                { full_name: 'java' , stargazers_count: '10' , forks_count: '10' } ,
-                { full_name: 'javascript' , stargazers_count: '100' , forks_count: '1000' }
-            ]
+    it( '最后测试有数据的状态list' , ()=>{
+
+        var initial = {
+            isFetch: false ,
+            error: '' ,
+            list: [ { full_name: 'java' , stargazers_count: '10' , forks_count: '10' } ,
+                    { full_name: 'javascript' , stargazers_count: '100' , forks_count: '1000' } ]
         }
 
-        const searchResult = renderIntoDocument( <SearchResult { ...initial } /> ) ;
+        var searchResult = renderIntoDocument( <SearchResult {...initial} /> ) ;
 
-        const $loading = scryRenderedDOMComponentsWithClass( searchResult , 'loading' ) ;
+        var $list = scryRenderedDOMComponentsWithClass( searchResult , 'list' ) ;
 
-        const $error = scryRenderedDOMComponentsWithClass( searchResult , 'error' ) ;
+        expect( $list[0] ).to.be.ok ;
 
-        const $list = scryRenderedDOMComponentsWithTag( searchResult , 'ul' ) ;
-
-        expect( $loading.length ).to.be.equal( 0 ) ;
-
-        expect( $error.length ).to.be.equal( 0 ) ;
-
-        var $ul = $list[ 0 ] ;
-        expect( $ul ).to.be.ok ;
-
-        var $li = $ul.getElementsByTagName( 'li' ) ;
+        var $li = $list[0].getElementsByTagName( 'li' ) ;
 
         expect( $li.length ).to.be.equal( 2 ) ;
 

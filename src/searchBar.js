@@ -1,27 +1,22 @@
 import React , { Component } from 'react' ;
-import ReactDOM from 'react-dom' ;
+
 
 export default class SearchBar extends Component {
     constructor( props ){
         super( props ) ;
         this.handleSubmit = this.handleSubmit.bind( this ) ;
-
     }
-    handleSubmit( e ){
-        e.preventDefault() ;
-        var $textarea = ReactDOM.findDOMNode( this.refs.textarea ) ;
-        if( typeof this.props.beginSearch === 'function' ){
-            this.props.beginSearch( $textarea.value ) ;
-            $textarea.value = '' ;
-        }else{
-            console.log( 'props.beginSearch not defined!' ) ;
-        }
+    handleSubmit( event ){
+        event.preventDefault() ;
+        var $input = this.refs.input ,
+            value = $input.value ;
+        this.props.beginSearch( value ) ;
     }
     render(){
         return (
-            <form onSubmit={ this.handleSubmit } >
-                <input ref="textarea" placeholder="请输入搜索内容" />
-                <button type="submit">搜索</button>
+            <form onSubmit={ this.handleSubmit }>
+                <input ref="input" placeholder="type some thing" />
+                <button>搜索</button>
             </form>
         ) ;
     }

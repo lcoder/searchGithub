@@ -36,11 +36,11 @@ export default class App extends Component {
         })
     }
     render() {
-        const { list , keyword , isFetch , error } = this.props.store.getState() ;
+        const { list , isFetch , error } = this.props.store.getState() ;
 
         return (
             <div>
-                <SearchBar value={ keyword } beginSearch={ this.benginSearch } />
+                <SearchBar beginSearch={ this.benginSearch } />
                 <SearchResult isFetch={isFetch} error={error} list={list} />
             </div>
         );

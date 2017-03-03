@@ -1,41 +1,36 @@
-import React from 'react' ;
-import ReactDOM from 'react-dom' ;
+import React , { Component } from 'react' ;
 import { expect } from 'chai' ;
 import SearchBar from '../src/searchBar' ;
-
 
 import {
     Simulate ,
     renderIntoDocument ,
-    findRenderedDOMComponentWithTag ,
-    findRenderedDOMComponentWithClass ,
-    scryRenderedDOMComponentsWithClass ,
-    scryRenderedDOMComponentsWithTag
+    findRenderedDOMComponentWithTag
 } from 'react-addons-test-utils' ;
 
 
-describe( 'SearchBar' , ()=>{
+describe( '测试SearchBar组件' , ()=>{
+    var keyword = '' ;
+    function beginSearch( value ){
+        keyword = value ;
+    }
 
-    it( 'can begin search' , ()=>{
-        var message ;
+    it( '能发送搜索内容' , ()=>{
 
-        function beginSearch( msg ){
-            message = msg ;
-        }
-        const instance = renderIntoDocument(
-            <SearchBar beginSearch={beginSearch} />
-        ) ;
+        var searchBar = renderIntoDocument( <SearchBar beginSearch={ beginSearch } /> ) ;
 
-        const $input = findRenderedDOMComponentWithTag( instance , 'input' ) ;
+        var $input = findRenderedDOMComponentWithTag( searchBar , 'input' ) ;
+        var $form = findRenderedDOMComponentWithTag( searchBar , 'form' ) ;
 
-        $input.value = 'some message' ;
-
-        const $form = findRenderedDOMComponentWithTag( instance , 'form' ) ;
+        $input.value = 'hello' ;
 
         Simulate.submit( $form ) ;
 
-        expect( message ).to.equal( 'some message' ) ;
+        expect( keyword ).to.be.equal( 'hello' ) ;
+
     } ) ;
+
+
 
 } ) ;
 

@@ -4,7 +4,7 @@ import App from './App';
 import { createStore } from 'redux' ;
 import reducer from './reducer' ;
 
-const initialState = { keyword: '' , list: [] , isFetch: false , error: '' } ;
+const initialState = { list: [] , isFetch: false , error: '' } ;
 
 var store = createStore( reducer , initialState ) ;
 
